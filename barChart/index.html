@@ -41,7 +41,8 @@
     angular.module('charts', [])
         .controller('mainCtrl', function AppCtrl ($scope) {
             $scope.options = {width: 500, height: 300, 'bar': 'aaa'};
-            $scope.data = [1, 2, 3, 4];
+            $scope.data = [10, 20, 30, 40];
+            $scope.plotValues ='10,20,30,40';
             $scope.hovered = function(d){
                 $scope.barValue = d;
                 $scope.$apply();
@@ -80,15 +81,19 @@
                 restrict: 'E',
                 replace: true,
                 controller: function AppCtrl ($scope) {
-                    $scope.update = function(d, i){ $scope.data = randomData(); };
+                    $scope.update = function(d, i){ $scope.data = $scope.plotValues.split(',');
+//randomData();
+ };
                     function randomData(){
                         return d3.range(~~(Math.random()*50)+1).map(function(d, i){return ~~(Math.random()*1000);});
                     }
                 },
                 template: '<div class="form">' +
                         'Height: {{options.height}}<br />' +
-                        '<input type="range" ng-model="options.height" min="100" max="800"/>' +
-                        '<br /><button ng-click="update()">Update Data</button>' +
+                        '<input type="range" ng-model="options.height" min="100" max="800"/> <br />' +
+                        'Enter comma separated values to be plotted <br />' +
+			'<input type="text" ng-model="plotValues"/> '+
+			'<br /><button ng-click="update()">Update Data</button>' +
                         '<br />Hovered bar data: {{barValue}}</div>'
             }
         });
